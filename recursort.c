@@ -7,9 +7,7 @@
  * The another approach is using the malloc function. This is correctly working code try using malloc fun also. 
  * @version 0.1
  * @date 2024-01-18
- * 
  * @copyright Copyright (c) 2024
- * 
  */
 #include<stdio.h>
 int* fill(int* a,int value,int* b){
