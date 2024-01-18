@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  * 
  */
-/*Aim : Find the sum of array elements using the recursion*/
+/*Aim 2: Find the sum of array elements using the recursion*/
 #include <stdio.h>
 
 int sum(int *a, int size, int index) {
