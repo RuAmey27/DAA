@@ -1,83 +1,144 @@
+/**
+ * @file queue.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2024-02-15
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 100
+// Define a structure for the queue node
+struct QueueNode {
+    int data;
+    struct QueueNode* next;
+};
 
-// Structure to represent a queue
-typedef struct {
-    int items[MAX_SIZE];
-    int front;
-    int rear;
-} Queue;
+// Define a structure for the queue
+struct Queue {
+    struct QueueNode *front, *rear;
+};
 
-// Function to initialize the queue
-void initialize(Queue *queue) {
-    queue->front = -1;
-    queue->rear = -1;
+// Function to create a new queue node
+struct QueueNode* createQueueNode(int data) {
+    struct QueueNode* newNode = (struct QueueNode*)malloc(sizeof(struct QueueNode));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to create a new queue
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->front = queue->rear = NULL;
+    return queue;
 }
 
 // Function to check if the queue is empty
-int isEmpty(Queue *queue) {
-    return queue->front == -1;
+int isEmpty(struct Queue* queue) {
+    return queue->front == NULL;
 }
 
-// Function to check if the queue is full
-int isFull(Queue *queue) {
-    return (queue->rear + 1) % MAX_SIZE == queue->front;
-}
-
-// Function to enqueue an element
-void enqueue(Queue *queue, int value) {
-    if (isFull(queue)) {
-        printf("Queue overflow\n");
-        exit(1);
-    }
+// Function to enqueue an element to the queue
+void enqueue(struct Queue* queue, int data) {
+    struct QueueNode* newNode = createQueueNode(data);
     if (isEmpty(queue)) {
-        queue->front = 0;
-    }
-    queue->rear = (queue->rear + 1) % MAX_SIZE;
-    queue->items[queue->rear] = value;
-}
-
-// Function to dequeue an element
-int dequeue(Queue *queue) {
-    if (isEmpty(queue)) {
-        printf("Queue underflow\n");
-        exit(1);
-    }
-    int removedItem = queue->items[queue->front];
-    if (queue->front == queue->rear) {
-        queue->front = -1;
-        queue->rear = -1;
+        queue->front = queue->rear = newNode;
     } else {
-        queue->front = (queue->front + 1) % MAX_SIZE;
+        queue->rear->next = newNode;
+        queue->rear = newNode;
     }
-    return removedItem;
 }
 
-// Function to peek at the front element of the queue
-int peek(Queue *queue) {
+// Function to dequeue an element from the queue
+int dequeue(struct Queue* queue) {
     if (isEmpty(queue)) {
         printf("Queue is empty\n");
-        exit(1);
+        return -1;
     }
-    return queue->items[queue->front];
+    struct QueueNode* temp = queue->front;
+    int data = temp->data;
+    queue->front = queue->front->next;
+    free(temp);
+    return data;
+}
+
+// Function to get the front element of the queue
+int front(struct Queue* queue) {
+    if (isEmpty(queue)) {
+        printf("Queue is empty\n");
+        return -1;
+    }
+    return queue->front->data;
+}
+
+// Function to get the size of the queue
+int size(struct Queue* queue) {
+    int count = 0;
+    struct QueueNode* current = queue->front;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+// Function to display the elements of the queue
+void display(struct Queue* queue) {
+    struct QueueNode* current = queue->front;
+    printf("Queue: ");
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
 }
 
 int main() {
-    Queue queue;
-    initialize(&queue);
+    struct Queue* queue = createQueue();
+    int choice, data;
 
-    // Enqueue elements into the queue
-    enqueue(&queue, 10);
-    enqueue(&queue, 20);
-    enqueue(&queue, 30);
+    while (1) {
+        printf("\nQueue Operations:\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Front\n");
+        printf("4. Size\n");
+        printf("5. Display\n");
+        printf("6. Exit\n");
 
-    // Dequeue and print elements from the queue
-    printf("Front element: %d\n", peek(&queue));
-    printf("Dequeued element: %d\n", dequeue(&queue));
-    printf("Front element: %d\n", peek(&queue));
-    printf("Dequeued element: %d\n", dequeue(&queue));
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter data to enqueue: ");
+                scanf("%d", &data);
+                enqueue(queue, data);
+                break;
+            case 2:
+                printf("Dequeued element: %d\n", dequeue(queue));
+                break;
+            case 3:
+                printf("Front element: %d\n", front(queue));
+                break;
+            case 4:
+                printf("Queue size: %d\n", size(queue));
+                break;
+            case 5:
+                display(queue);
+                break;
+            case 6:
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                printf("Invalid choice! Please enter a valid option.\n");
+        }
+    }
 
     return 0;
 }
