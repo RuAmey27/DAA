@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  * 
  */
-/* Aim 2: Find the minimum and maximum elements in the array*/
+/* Aim 4: Find the minimum and maximum elements in the array*/
 #include <stdio.h>
 int main() {
   int arr[] = {5, 3, 9, 2, 8, 6, 1, 7, 4, 0};

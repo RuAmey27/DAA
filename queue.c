@@ -1,6 +1,6 @@
 /**
  * @file queue.c
- * @author your name (you@domain.com)
+ * @author Amey Pande (Ameypande2709@gmail.com)
  * @brief 
  * @version 0.1
  * @date 2024-02-15

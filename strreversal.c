@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  * 
  */
-/* Aim 1:Use recursion to reverse the given string */
+/* Aim 2:Use recursion to reverse the given string */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
